@@ -21,6 +21,8 @@ from time import sleep
 from random import choice
 from builtins import input
 
+#hi im marije esmee julia rekker
+
 BOARDSIZE = 3
 
 BLACK = (0, 0, 0)
