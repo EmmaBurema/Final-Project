@@ -22,6 +22,7 @@ from random import choice
 from builtins import input
 
 #hi im marije esmee julia rekker
+#hmmm
 
 BOARDSIZE = 3
 
