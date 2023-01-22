@@ -1,3 +1,7 @@
+
+import pygame
+from pygame.locals import *
+from pygame import gfxdraw
 """
 Dots and Boxes Solver
 Version 7:
@@ -11,18 +15,11 @@ figure out which sacrifice would give the user the least points.
 Notes:
 * User goes first (so program can mathematically win)
 """
-
-import pygame
-from pygame.locals import *
-from pygame import gfxdraw
 import sys
 from collections import namedtuple
 from time import sleep
 from random import choice
 from builtins import input
-
-#hi im marije esmee julia rekker
-#hmmm
 
 BOARDSIZE = 3
 
