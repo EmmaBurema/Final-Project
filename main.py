@@ -13,7 +13,6 @@ Notes:
 """
 
 import pygame
-import speech_recognition
 from pygame.locals import *
 from pygame import gfxdraw
 import sys
@@ -21,7 +20,6 @@ from collections import namedtuple
 from time import sleep
 from random import choice
 from builtins import input
-
 
 #hi im marije esmee julia rekker
 #hmmm
