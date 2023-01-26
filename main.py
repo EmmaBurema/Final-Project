@@ -20,9 +20,10 @@ from collections import namedtuple
 from time import sleep
 from random import choice
 from builtins import input
+from speech_rec import Mic
 
-#hi im marije esmee julia rekker
-#hmmm
+# hi im marije esmee julia rekker
+# hmmm
 
 BOARDSIZE = 3
 
@@ -46,8 +47,8 @@ dot_font = pygame.font.SysFont('Arial', 15)
 
 BOX_USER = myfont.render('U', True, BLUE)
 BOX_COMPUTER = myfont.render('C', True, RED)
-spoke1 = [(2,6),(10,11),(9,13),(4,5)]
-spoke2 = [(1,5),(6,7),(10,14),(8,9)]
+spoke1 = [(2, 6), (10, 11), (9, 13), (4, 5)]
+spoke2 = [(1, 5), (6, 7), (10, 14), (8, 9)]
 
 # set screen width/height and caption
 size = BOARDSIZE * 100 + 100
@@ -68,11 +69,12 @@ for i in range(BOARDSIZE):
             Point(BOARDSIZE * i + i2, i2 * 100 + 100, i * 100 + 100, []))
 moves_done = []
 moves_done_persons = []
-boxes = [[i, i+1, i+BOARDSIZE, i+BOARDSIZE+1,OWNER_NONE] for i in range(0,3)]
-boxes.extend([[i, i+1, i+BOARDSIZE, i+BOARDSIZE+1, OWNER_NONE] for i in range(4,7)])
-boxes.extend([[i, i+1, i+BOARDSIZE, i+BOARDSIZE+1, OWNER_NONE] for i in range(8,11)])
-score = [0, 0] # user, computer
+boxes = [[i, i + 1, i + BOARDSIZE, i + BOARDSIZE + 1, OWNER_NONE] for i in range(0, 3)]
+boxes.extend([[i, i + 1, i + BOARDSIZE, i + BOARDSIZE + 1, OWNER_NONE] for i in range(4, 7)])
+boxes.extend([[i, i + 1, i + BOARDSIZE, i + BOARDSIZE + 1, OWNER_NONE] for i in range(8, 11)])
+score = [0, 0]  # user, computer
 is_user_turn = True
+
 
 # print(boxes)
 def id_to_index(_id):
@@ -80,6 +82,7 @@ def id_to_index(_id):
         if board[i].id == _id:
             return i
     return -1
+
 
 # print(board)
 def disp_board():
@@ -109,7 +112,7 @@ def disp_board():
         # for partner_id in point.partners:
         #     partner = board[id_to_index(partner_id)]
         #     pygame.draw.line(SURF, BLACK, (point.x, point.y), (partner.x, partner.y))
-            # print(partner)
+        # print(partner)
     for i, point in enumerate(board):
         # pygame.draw.circle(SURF, BLACK, (point.x, point.y), 5, 0)
         gfxdraw.filled_circle(SURF, point.x, point.y, 5, BLACK)
@@ -126,12 +129,14 @@ def disp_board():
             text_width, text_height = myfont.size("C")
             SURF.blit(BOX_COMPUTER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
 
-def is_connection(id1, id2):                                                    # SPEECH?
+
+def is_connection(id1, id2):  # SPEECH?
     if (id1, id2) in moves_done:
         return True
     if (id2, id1) in moves_done:
         return True
     return False
+
 
 def is_valid(id1, id2):
     if is_connection(id1, id2):
@@ -145,7 +150,8 @@ def is_valid(id1, id2):
     return False
     # return ((id1, id2) not in moves_done and (id2, id1) not in moves_done) and (id2 == id1 + 1 or id2 == id1 - 1 or id2 == id1 + BOARDSIZE or id2 == id1 - BOARDSIZE)
 
-def move(is_user, id1, id2):                                            # SPEECH?
+
+def move(is_user, id1, id2):  # SPEECH?
     # connects id1 and id2
     # depends on somebody else to check if move is valid
     board[id_to_index(id1)].partners.append(id2)
@@ -153,6 +159,7 @@ def move(is_user, id1, id2):                                            # SPEECH
     moves_done.append((id1, id2))
     moves_done_persons.append(is_user)
     return check_move_made_box(is_user, id1, id2)
+
 
 def possible_moves():
     possible = []
@@ -164,6 +171,7 @@ def possible_moves():
                 continue
             possible.append((a, b))
     return possible
+
 
 def count_connections_box(box):
     # counts the number of lines that exist inside given box
@@ -193,9 +201,11 @@ def count_connections_box(box):
 
     return (count, not_connections)
 
+
 def get_best_move_v1(possible):
     # take random from possible moves
     return choice(possible)
+
 
 def get_best_move_v2(possible):
     # check if there are any possible boxes
@@ -206,6 +216,7 @@ def get_best_move_v2(possible):
     # ok, so there weren't any box making moves
     # now lets just take a random move
     return choice(possible)
+
 
 def get_best_move_v3(possible):
     # check if there are any possible boxes
@@ -230,6 +241,7 @@ def get_best_move_v3(possible):
                     possible.remove(p_move)
 
     return choice(possible)
+
 
 def get_best_move_v5(possible):
     # check if there are any possible boxes
@@ -257,7 +269,6 @@ def get_best_move_v5(possible):
                     possible.remove((a, b))
                     possible.remove((b, a))
 
-
     # now, we want to prioritize any spoke moves
     # print(spoke1)
     # print(possible)
@@ -271,6 +282,7 @@ def get_best_move_v5(possible):
             return p_move
 
     return choice(possible)
+
 
 def get_best_move(possible):
     # check if there are any possible boxes
@@ -331,12 +343,13 @@ def get_best_move(possible):
         # last resort: just pick a random move
         return choice(removed)
 
+
 def decide_and_move():
     # randomly pick a valid move
     possible = possible_moves()
     my_choice = get_best_move(possible)
     # print(my_choice)
-    is_box = move(False, my_choice[0],my_choice[1])
+    is_box = move(False, my_choice[0], my_choice[1])
 
     if is_box:
         score[1] += 1
@@ -346,20 +359,22 @@ def decide_and_move():
         check_complete()
         decide_and_move()
 
+
 def check_complete():
     possible = possible_moves()
     if len(possible) == 0:
         # game is finished!
         print("Game over")
         if score[0] > score[1]:
-            print("You won! Score: {} to {}".format(score[0],score[1]))
+            print("You won! Score: {} to {}".format(score[0], score[1]))
         elif score[1] > score[0]:
-            print("Computer won :( Score: {} to {}".format(score[0],score[1]))
+            print("Computer won :( Score: {} to {}".format(score[0], score[1]))
         else:
-            print("Tie game. Score: {} to {}".format(score[0],score[1]))
+            print("Tie game. Score: {} to {}".format(score[0], score[1]))
         input("Press enter to end game:")
         pygame.quit()
         sys.exit()
+
 
 def move_makes_box(id1, id2):
     is_box = False
@@ -373,11 +388,13 @@ def move_makes_box(id1, id2):
         temp.remove(id1)
         temp.remove(id2)
         # print(temp)
-        if is_connection(temp[0],temp[1]):
-            if (is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or (is_connection(id1, temp[1]) and is_connection(id2, temp[0])):
+        if is_connection(temp[0], temp[1]):
+            if (is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or (
+                    is_connection(id1, temp[1]) and is_connection(id2, temp[0])):
                 is_box = True
 
     return is_box
+
 
 def check_move_made_box(is_user, id1, id2):
     is_box = False
@@ -388,8 +405,8 @@ def check_move_made_box(is_user, id1, id2):
             continue
         temp.remove(id1)
         temp.remove(id2)
-        if is_connection(temp[0],temp[1]) and ((is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or
-                                (is_connection(id1, temp[1]) and is_connection(id2, temp[0]))):
+        if is_connection(temp[0], temp[1]) and ((is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or
+                                                (is_connection(id1, temp[1]) and is_connection(id2, temp[0]))):
             # yup, we just made a box
             if is_user:
                 score[0] += 1
@@ -401,10 +418,12 @@ def check_move_made_box(is_user, id1, id2):
 
     return is_box
 
-def user_move():                                           # SPEECH? hier wordt naar input gevraagd
+
+def user_move():  # SPEECH? hier wordt naar input gevraagd
     try:
-        p1, p2 = map(int,input("What move do you want to make?").split(","))
-        #or p1, p2 = map(audio_text.split(","))   #nog ff shit importeren van class naar class
+        p1, p2 = map(int,Mic.listen().split(","))
+        # or p1, p2 = map(audio_text.split(","))   #nog ff shit importeren van class naar class
+
 
     except ValueError:
         print("Invalid move.")
@@ -427,6 +446,7 @@ def user_move():                                           # SPEECH? hier wordt 
                 pygame.display.update()
                 check_complete()
                 user_move()
+
 
 SURF.fill((255, 255, 255))
 disp_board()
