@@ -1,4 +1,4 @@
-from speech_rec import Mic
+from speech_rec import Mic  #BELANGRIJK
 import pygame
 import pyaudio
 
@@ -11,7 +11,7 @@ class Test:
         self.screen = pygame.display.set_mode(self.size)
         self.time = pygame.time.get_ticks()
 
-        self.mic = Mic()
+        self.mic = Mic() #BE  #BELANGRIJK
         self.list = []
 
         # init Connect4
@@ -33,7 +33,7 @@ class Test:
 
     def tes(self):
         # self.list.append(self.mic.listen())
-        p1, p2 = map(int, self.mic.listen().split(","))
+        p1, p2 = map(int, self.mic.listen().split(","))  #BELANGRIJK
         print(p1,p2)
 
 
