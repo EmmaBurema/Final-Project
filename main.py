@@ -126,7 +126,7 @@ def disp_board():
             text_width, text_height = myfont.size("C")
             SURF.blit(BOX_COMPUTER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
 
-def is_connection(id1, id2):
+def is_connection(id1, id2):                                                    # SPEECH?
     if (id1, id2) in moves_done:
         return True
     if (id2, id1) in moves_done:
@@ -145,7 +145,7 @@ def is_valid(id1, id2):
     return False
     # return ((id1, id2) not in moves_done and (id2, id1) not in moves_done) and (id2 == id1 + 1 or id2 == id1 - 1 or id2 == id1 + BOARDSIZE or id2 == id1 - BOARDSIZE)
 
-def move(is_user, id1, id2):
+def move(is_user, id1, id2):                                            # SPEECH?
     # connects id1 and id2
     # depends on somebody else to check if move is valid
     board[id_to_index(id1)].partners.append(id2)
@@ -401,9 +401,11 @@ def check_move_made_box(is_user, id1, id2):
 
     return is_box
 
-def user_move():
+def user_move():                                           # SPEECH? hier wordt naar input gevraagd
     try:
         p1, p2 = map(int,input("What move do you want to make?").split(","))
+        #or p1, p2 = map(audio_text.split(","))   #nog ff shit importeren van class naar class
+
     except ValueError:
         print("Invalid move.")
         user_move()
