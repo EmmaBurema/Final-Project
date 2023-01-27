@@ -7,28 +7,31 @@ from time import sleep
 from random import choice
 from builtins import input
 
+from UserPlayer import UserMoves
+from CompPlayer import CompPlayer
+
 
 class Board:
-    board = []
-    Point = namedtuple('Point', ['id', 'x', 'y', 'partners'])
-
-    OWNER_NONE = 0
-    OWNER_USER = 1
-    OWNER_COMPUTER = 2
-
-    BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
-    BLUE = (0, 0, 255)
-
-    SURF = pygame.display.set_mode((size, size))
-
-    myfont = pygame.font.SysFont('Arial', 50)
-    score_font = pygame.font.SysFont('Arial', 30)
-    dot_font = pygame.font.SysFont('Arial', 15)
-
     def __init__(self, BOARDSIZE):
         self.Boardsize = BOARDSIZE
-        size = self.BOARDSIZE * 100 + 100
+        self.size = self.BOARDSIZE * 100 + 100
+
+        self.board = []
+        self.Point = namedtuple('Point', ['id', 'x', 'y', 'partners'])
+
+        self.OWNER_NONE = 0
+        self.OWNER_USER = 1
+        self.OWNER_COMPUTER = 2
+
+        self.BLACK = (0, 0, 0)
+        self.RED = (255, 0, 0)
+        self.BLUE = (0, 0, 255)
+
+        self.SURF = pygame.display.set_mode((self.size, self.size))
+
+        self.myfont = pygame.font.SysFont('Arial', 50)
+        self.score_font = pygame.font.SysFont('Arial', 30)
+        self.dot_font = pygame.font.SysFont('Arial', 15)
 
     def updateBoard(self):
         for i in range(self.Boardsize):
@@ -46,11 +49,11 @@ class Board:
 
     def id_to_index(self, _id):
         for i in range(len(self.board)):
-            if board[i].id == _id:
+            if self.board[i].id == _id:
                 return i
         return -1
 
-    def disp_board(self):
+    def dispay_board(self):
         # first lets draw the score at the top
         score_user = self.score_font.render("USER: {}".format(self.score[0]), True, self.BLUE)
         w, h = self.score_font.size("USER: {}".format(self.score[0]))
@@ -93,3 +96,13 @@ class Board:
             elif box[4] == self.OWNER_COMPUTER:
                 text_width, text_height = self.myfont.size("C")
                 self.SURF.blit(self.BOX_COMPUTER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
+
+    def gameLoop(self):
+        self.SURF.fill((255, 255, 255))
+        user_turn = True
+        self.disp_board()
+        pygame.display.update()
+        UserMoves.user_move()
+        self.display_board()
+        pygame.display.update()
+        CompPlayer.decide_and_move()

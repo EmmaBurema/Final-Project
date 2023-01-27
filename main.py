@@ -20,12 +20,12 @@ from collections import namedtuple
 from time import sleep
 from random import choice
 from builtins import input
-from speech_rec import Mic
 
-# hi im marije esmee julia rekker
-# hmmm
+import speech_recognition as sr
+import pyaudio
 
-BOARDSIZE = 3
+
+BOARDSIZE = 4
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -36,7 +36,7 @@ OWNER_USER = 1
 OWNER_COMPUTER = 2
 
 Point = namedtuple('Point', ['id', 'x', 'y', 'partners'])
-Box = namedtuple("Box", ["p1", "p2", "p3", "p4", "owner"])
+#Box = namedtuple("Box", ["p1", "p2", "p3", "p4", "owner"])
 
 # initialize game engine
 pygame.init()
@@ -83,7 +83,6 @@ def id_to_index(_id):
             return i
     return -1
 
-
 # print(board)
 def disp_board():
     # first lets draw the score at the top
@@ -129,14 +128,12 @@ def disp_board():
             text_width, text_height = myfont.size("C")
             SURF.blit(BOX_COMPUTER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
 
-
 def is_connection(id1, id2):  # SPEECH?
     if (id1, id2) in moves_done:
         return True
     if (id2, id1) in moves_done:
         return True
     return False
-
 
 def is_valid(id1, id2):
     if is_connection(id1, id2):
@@ -150,7 +147,6 @@ def is_valid(id1, id2):
     return False
     # return ((id1, id2) not in moves_done and (id2, id1) not in moves_done) and (id2 == id1 + 1 or id2 == id1 - 1 or id2 == id1 + BOARDSIZE or id2 == id1 - BOARDSIZE)
 
-
 def move(is_user, id1, id2):  # SPEECH?
     # connects id1 and id2
     # depends on somebody else to check if move is valid
@@ -159,7 +155,6 @@ def move(is_user, id1, id2):  # SPEECH?
     moves_done.append((id1, id2))
     moves_done_persons.append(is_user)
     return check_move_made_box(is_user, id1, id2)
-
 
 def possible_moves():
     possible = []
@@ -171,7 +166,6 @@ def possible_moves():
                 continue
             possible.append((a, b))
     return possible
-
 
 def count_connections_box(box):
     # counts the number of lines that exist inside given box
@@ -201,11 +195,9 @@ def count_connections_box(box):
 
     return (count, not_connections)
 
-
 def get_best_move_v1(possible):
     # take random from possible moves
     return choice(possible)
-
 
 def get_best_move_v2(possible):
     # check if there are any possible boxes
@@ -216,7 +208,6 @@ def get_best_move_v2(possible):
     # ok, so there weren't any box making moves
     # now lets just take a random move
     return choice(possible)
-
 
 def get_best_move_v3(possible):
     # check if there are any possible boxes
@@ -242,7 +233,6 @@ def get_best_move_v3(possible):
 
     return choice(possible)
 
-
 def get_best_move_v5(possible):
     # check if there are any possible boxes
     for p_move in possible:
@@ -252,8 +242,8 @@ def get_best_move_v5(possible):
     # ok, so there weren't any box making moves
     # now lets just take a random move
     # but, we want to make sure we don't give the user a box on the next turn
+
     for box in boxes:
-        # print(box)
         count, not_connections = count_connections_box(box)
         # note we are checking if len(possible) > 2 because
         # even if it is a bad move, we don't want to delete our only move
@@ -270,8 +260,6 @@ def get_best_move_v5(possible):
                     possible.remove((b, a))
 
     # now, we want to prioritize any spoke moves
-    # print(spoke1)
-    # print(possible)
     for p_move in possible:
         a, b = p_move
         if (a, b) in spoke1 or (b, a) in spoke1:
@@ -282,7 +270,6 @@ def get_best_move_v5(possible):
             return p_move
 
     return choice(possible)
-
 
 def get_best_move(possible):
     # check if there are any possible boxes
@@ -343,7 +330,6 @@ def get_best_move(possible):
         # last resort: just pick a random move
         return choice(removed)
 
-
 def decide_and_move():
     # randomly pick a valid move
     possible = possible_moves()
@@ -359,7 +345,6 @@ def decide_and_move():
         check_complete()
         decide_and_move()
 
-
 def check_complete():
     possible = possible_moves()
     if len(possible) == 0:
@@ -374,7 +359,6 @@ def check_complete():
         input("Press enter to end game:")
         pygame.quit()
         sys.exit()
-
 
 def move_makes_box(id1, id2):
     is_box = False
@@ -394,7 +378,6 @@ def move_makes_box(id1, id2):
                 is_box = True
 
     return is_box
-
 
 def check_move_made_box(is_user, id1, id2):
     is_box = False
@@ -418,12 +401,10 @@ def check_move_made_box(is_user, id1, id2):
 
     return is_box
 
-
-def user_move():  # SPEECH? hier wordt naar input gevraagd
+def user_move():  # The user is asked to tell the computer what he/she wants to input
     try:
-        p1, p2 = map(int,Mic.listen().split(","))
-        # or p1, p2 = map(audio_text.split(","))   #nog ff shit importeren van class naar class
-
+        #p1, p2 = map(int, input("What move do you want to make?").split(","))
+        p1, p2 = map(int, listen().split(","))
 
     except ValueError:
         print("Invalid move.")
@@ -446,6 +427,31 @@ def user_move():  # SPEECH? hier wordt naar input gevraagd
                 pygame.display.update()
                 check_complete()
                 user_move()
+
+def listen():
+    #   Using the laptop microphone as the source
+    #   listens to what is said and stores in 'audio_text' variable
+    r = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        print("Tell me your move")
+        audio_text = r.listen(source)
+        print("Got it, thanks")
+
+        #   This bit is exception handling
+        #   r (recognizer method) gives a request error when the API cannot be reached
+    try:
+        # using google speech recognition
+        speech_input = r.recognize_google(audio_text)
+        print("You said: " + speech_input)
+        # p1, p2 = map(int, speech_input.split(","))
+        return speech_input
+    except ValueError:
+        print("Invalid input format. Please enter two integers separated by a comma.")
+        return None
+    except:
+        print("Sorry, could you repeat that?")
+        return None
 
 
 SURF.fill((255, 255, 255))
