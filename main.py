@@ -1,15 +1,39 @@
 """
-Dots and Boxes Solver
-Version 7:
-Computer tries to complete as many boxes as possible,
-while avoiding putting in the 3rd line on a box(as this would
-allow the next player to complete that box, therefore, getting the point.)
-Also, tries to play spoke pattern to make sure large
-"chains" do not form, as this can give the user an advantage.
-New: When computer is forced to sacrifice a cell, it should analyze and
-figure out which sacrifice would give the user the least points.
-Notes:
-* User goes first (so program can mathematically win)
+            Main
+            game
+    board         player - this class doesn't exist yet
+            compPlayer  userPlayer
+                        speechRec
+
+    Structure:
+    The main loop will call upon the game class to run the game
+    The game class will call upon 2 classes which are:
+    - board class - which maneges the drawing of the board but also checking
+        if moves are valid and counting the scores.
+    - player class - which handles the input of both the computer and the user
+        player
+    The player class then will call upon or the user player or the computer player
+    The computer player will calculate the best possible move to make to always win,
+        sometimes the computer will even try to crash the game to win (try the board
+        at a size of 2, you will be able to win of the computer).
+    The user player will all upon the speech recogintion to make a move, this is done
+        by the subclass that has been made for this.
+    All the speech recognition does is use the microphone to hear what you are saying
+        by using the google library to be able to interpert words.
+
+*** FOR MARIJE - DELETE BEFORE HANDING IN ***
+De player class bestaat nog niet, deze moet het "tekenen"/doorgeven van beide players
+kunnen handelen.
+
+Het lijkt alsof de compPlayer alleen met de best move functie aan de slag moet, maar
+dat is volgens mij niet zo. Want hij decide op een of andere manier toch iets maar ik
+kon de "usages van versie 1-5 niet vinden.
+
+Dan momenteel staat de check moves nog in een aparte class, maar deze moet terug gezet
+worden in de board class.
+
+NOG NIET ALLE FUNCTIES VAN DE MAIN STAAN IN EEN CLASS!!!
+***
 """
 
 import pygame
