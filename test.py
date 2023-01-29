@@ -36,8 +36,6 @@ class Test:
         p1, p2 = map(int, self.mic.listen().split(","))  #BELANGRIJK
         print(p1,p2)
 
-
-
 if __name__ == "__main__":
     test = Test()
     while True:

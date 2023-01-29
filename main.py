@@ -77,7 +77,7 @@ is_user_turn = True
 
 
 # print(boxes)
-def id_to_index(_id):
+def id_to_index(_id):       #running through the board
     for i in range(len(board)):
         if board[i].id == _id:
             return i
@@ -100,7 +100,7 @@ def disp_board():
         # pygame.draw.circle(SURF, RED, (size // 2 + w2 + 20, 10 + h2 // 2), 7, 0)
         gfxdraw.filled_circle(SURF, size // 2 + w2 + 20, 10 + h2 // 2, 7, RED)
         gfxdraw.aacircle(SURF, size // 2 + w2 + 20, 10 + h2 // 2, 7, RED)
-    for i, move in enumerate(moves_done):
+    for i, move in enumerate(moves_done):       # draw lines
         p1 = board[id_to_index(move[0])]
         p2 = board[id_to_index(move[1])]
         thickness = 3 if move == moves_done[-1] else 1
@@ -112,13 +112,13 @@ def disp_board():
         #     partner = board[id_to_index(partner_id)]
         #     pygame.draw.line(SURF, BLACK, (point.x, point.y), (partner.x, partner.y))
         # print(partner)
-    for i, point in enumerate(board):
+    for i, point in enumerate(board):       # draw dots
         # pygame.draw.circle(SURF, BLACK, (point.x, point.y), 5, 0)
         gfxdraw.filled_circle(SURF, point.x, point.y, 5, BLACK)
         gfxdraw.aacircle(SURF, point.x, point.y, 5, BLACK)
         dot_num = dot_font.render(str(i), True, BLACK)
         SURF.blit(dot_num, (point.x + 10, point.y - 20))
-    for box in boxes:
+    for box in boxes:       # draw boxes
         x1 = board[id_to_index(box[0])].x
         y1 = board[id_to_index(box[0])].y
         if box[4] == OWNER_USER:
@@ -485,10 +485,10 @@ while True:
     sleep(0.5)
     decide_and_move()
     check_complete()
-    SURF.fill((255, 255, 255))
-    disp_board()
-    pygame.display.update()
-    sleep(0.5)
+    # SURF.fill((255, 255, 255))
+    # disp_board()
+    # pygame.display.update()
+    # sleep(0.5)
     # sleep(1.5)
     # run at 20 fps
     # clock.tick(20)
