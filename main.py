@@ -28,20 +28,6 @@ https://mail.python.org/pipermail/tutor/2002-June/014765.html
         by the subclass that has been made for this.
     All the speech recognition does is use the microphone to hear what you are saying
         by using the google library to be able to interpert words.
-
-*** FOR MARIJE - DELETE BEFORE HANDING IN ***
-De player class bestaat nog niet, deze moet het "tekenen"/doorgeven van beide players
-kunnen handelen.
-
-Het lijkt alsof de compPlayer alleen met de best move functie aan de slag moet, maar
-dat is volgens mij niet zo. Want hij decide op een of andere manier toch iets maar ik
-kon de "usages van versie 1-5 niet vinden.
-
-Dan momenteel staat de check moves nog in een aparte class, maar deze moet terug gezet
-worden in de board class.
-
-NOG NIET ALLE FUNCTIES VAN DE MAIN STAAN IN EEN CLASS!!!
-***
 """
 
 from Game import Game

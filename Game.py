@@ -7,18 +7,21 @@ from time import sleep
 from random import choice
 from builtins import input
 
-import speech_recognition as sr
-import pyaudio
+from Board import Board
 
 class Game:
-    def __init__(self, player1, player 2, BOARDSIZE):
+    def __init__(self, player1, player2, BOARDSIZE):
         self.boardsize = BOARDSIZE
         self.size = self.broadsize * 100 + 100
         self.SURF = pygame.display.set_mode((self.size, self.size))
+        self.board = Board(self.boardsize)
+
+        self.player1 = player1
+        self.player2 = player2
 
     def gameLoop(self):
-        SURF.fill((255, 255, 255))
-        disp_board()
+        self.SURF.fill((255, 255, 255))
+        self.board.disp_board()
         pygame.display.update()
 
         while True:
