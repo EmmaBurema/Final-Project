@@ -26,12 +26,15 @@ class Board:
         self.my_font = pygame.font.SysFont('Arial', 50)
         self.score_font = pygame.font.SysFont('Arial', 30)
         self.dot_font = pygame.font.SysFont('Arial', 15)
+        self.BOX_USER = self.my_font.render('U', True, self.BLUE)
+        self.BOX_COMPUTER = self.my_font.render('C', True, self.RED)
 
         self.moves_done = []
         self.moves_done_persons = []
         self.score = [0, 0]  # user, computer
         self.is_user_turn = False
-        self.score_user
+        self.score_user = 0
+        self.boxes = []
 
     def update_board(self, is_user_turn):
         for i in range(self.boardsize):
@@ -40,9 +43,9 @@ class Board:
                     self.Point(self.boardsize * i + i2, i2 * 100 + 100, i * 100 + 100, []))
         self.moves_done = []
         self.moves_done_persons = []
-        boxes = [[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(0, 3)]
-        boxes.extend([[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(4, 7)])
-        boxes.extend([[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(8, 11)])
+        self.boxes = [[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(0, 3)]
+        self.boxes.extend([[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(4, 7)])
+        self.boxes.extend([[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(8, 11)])
         self.score = [0, 0]  # user, computer
         self.is_user_turn = True
         return is_user_turn
@@ -106,11 +109,11 @@ class Board:
     def is_valid(self, id1, id2, board):
         if self.is_connection(id1, id2):
             return False
-        self.p1 = board[Board.id_to_index(id1)]
-        self.p2 = board[Board.id_to_index(id2)]
-        if (self.p1.x == self.p2.x + 100 or self.p1.x == self.p2.x - 100) and self.p1.y == self.p2.y:
+        p1 = board[Board.id_to_index(id1)]
+        p2 = board[Board.id_to_index(id2)]
+        if (p1.x == p2.x + 100 or p1.x == p2.x - 100) and p1.y == p2.y:
             return True
-        if self.p1.x == self.p2.x and (self.p1.y == self.p2.y + 100 or self.p1.y == self.p2.y - 100):
+        if p1.x == p2.x and (p1.y == p2.y + 100 or p1.y == p2.y - 100):
             return True
         return False
 
