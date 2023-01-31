@@ -32,3 +32,11 @@ class UserMoves:
             else:
                 self.is_box = move(True, self.p1, self.p2)
                 check_complete()
+
+                if is_box():
+                    print("You scored! Have another Turn!")
+                    SURF.fill((255, 255, 255))
+                    disp_board()
+                    pygame.display.update()
+                    check_complete()
+                    user_move()

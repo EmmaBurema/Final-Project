@@ -52,3 +52,57 @@ class CheckMoves:
 
         return is_box
 
+    def check_complete(self):
+        possible = possible_moves()
+        if len(possible) == 0:
+            # game is finished!
+            print("Game over")
+            if score[0] > score[1]:
+                print("You won! Score: {} to {}".format(score[0], score[1]))
+            elif score[1] > score[0]:
+                print("Computer won :( Score: {} to {}".format(score[0], score[1]))
+            else:
+                print("Tie game. Score: {} to {}".format(score[0], score[1]))
+            input("Press enter to end game:")
+            pygame.quit()
+
+    def move_makes_box(self, id1, id2):
+        is_box = False
+        # check if the connection just make from id1 to id2 made a box
+        for i, box in enumerate(boxes):
+            temp = list(box[:-1])
+            # print(temp)
+            if id1 not in temp or id2 not in temp:
+                continue
+            # temp = list(box[:])
+            temp.remove(id1)
+            temp.remove(id2)
+            # print(temp)
+            if is_connection(temp[0], temp[1]):
+                if (is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or (
+                        is_connection(id1, temp[1]) and is_connection(id2, temp[0])):
+                    is_box = True
+
+        return is_box
+
+    def check_move_made_box(self, is_user, id1, id2):
+        is_box = False
+        # check if the connection just make from id1 to id2 made a box
+        for i, box in enumerate(boxes):
+            temp = list(box[:-1])
+            if id1 not in temp or id2 not in temp:
+                continue
+            temp.remove(id1)
+            temp.remove(id2)
+            if is_connection(temp[0], temp[1]) and ((is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or
+                                                    (is_connection(id1, temp[1]) and is_connection(id2, temp[0]))):
+                # yup, we just made a box
+                if is_user:
+                    score[0] += 1
+                    boxes[i][4] = OWNER_USER
+                else:
+                    score[1] + 1
+                    boxes[i][4] = OWNER_COMPUTER
+                is_box = True
+
+        return is_box

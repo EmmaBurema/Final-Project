@@ -1,6 +1,11 @@
 """
 Sources:
 https://github.com/coderkalyan/dots-boxes-py/blob/master/dots_boxes.py
+dotsandboxes.org
+https://blog.devgenius.io/dots-and-boxes-game-in-python-22058a187a84
+chat.openai.com
+https://replit.com/@SharkCoding/Dots-and-Boxes-Pygame?embed=true#pyproject.toml
+https://mail.python.org/pipermail/tutor/2002-June/014765.html
 
             Main
             game
@@ -88,62 +93,6 @@ clock = pygame.time.Clock()
 # the gameboard is stored as a list of points
 # points contain their number, and the number of their connections
 board = []
-
-def check_complete():
-    possible = possible_moves()
-    if len(possible) == 0:
-        # game is finished!
-        print("Game over")
-        if score[0] > score[1]:
-            print("You won! Score: {} to {}".format(score[0], score[1]))
-        elif score[1] > score[0]:
-            print("Computer won :( Score: {} to {}".format(score[0], score[1]))
-        else:
-            print("Tie game. Score: {} to {}".format(score[0], score[1]))
-        input("Press enter to end game:")
-        pygame.quit()
-        sys.exit()
-
-def move_makes_box(id1, id2):
-    is_box = False
-    # check if the connection just make from id1 to id2 made a box
-    for i, box in enumerate(boxes):
-        temp = list(box[:-1])
-        # print(temp)
-        if id1 not in temp or id2 not in temp:
-            continue
-        # temp = list(box[:])
-        temp.remove(id1)
-        temp.remove(id2)
-        # print(temp)
-        if is_connection(temp[0], temp[1]):
-            if (is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or (
-                    is_connection(id1, temp[1]) and is_connection(id2, temp[0])):
-                is_box = True
-
-    return is_box
-
-def check_move_made_box(is_user, id1, id2):
-    is_box = False
-    # check if the connection just make from id1 to id2 made a box
-    for i, box in enumerate(boxes):
-        temp = list(box[:-1])
-        if id1 not in temp or id2 not in temp:
-            continue
-        temp.remove(id1)
-        temp.remove(id2)
-        if is_connection(temp[0], temp[1]) and ((is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or
-                                                (is_connection(id1, temp[1]) and is_connection(id2, temp[0]))):
-            # yup, we just made a box
-            if is_user:
-                score[0] += 1
-                boxes[i][4] = OWNER_USER
-            else:
-                score[1] + 1
-                boxes[i][4] = OWNER_COMPUTER
-            is_box = True
-
-    return is_box
 
 def user_move():  # The user is asked to tell the computer what he/she wants to input
     try:
