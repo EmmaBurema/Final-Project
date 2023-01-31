@@ -1,6 +1,6 @@
 """
 Sources:
-https://github.com/coderkalyan/dots-boxes-py/blob/master/dots_boxes.py
+Code for dots and boxes game: https://github.com/coderkalyan/dots-boxes-py/blob/master/dots_boxes.py
 dotsandboxes.org
 https://blog.devgenius.io/dots-and-boxes-game-in-python-22058a187a84
 chat.openai.com

@@ -17,8 +17,15 @@ class UserMoves:
 
     def user_move(self):
         try:
-            self.p1, self.p2 = map(int, input("What move do you want to make?").split(","))
-            self.p1, self.p2 = map(int, listen().split(","))
+            # self.p1, self.p2 = map(int, input("What move do you want to make?").split(","))
+            # self.p1, self.p2 = map(int, listen().split(","))
+            response = listen()
+            if isinstance(response, str):
+                self.p1, self.p2 = map(int, response.split(","))
+            else:
+                print("Invalid Move.")
+                UserMove()
+                return
 
         except ValueError:
             print("Move is not possible.")

@@ -47,7 +47,7 @@ class Board:
         self.is_user_turn = True
         return is_user_turn
 
-    def id_to_index(self, _id):
+    def id_to_index(self, _id):     # run trough board and convert given numbers to coordinates of dots in system
         for i in range(len(self.board)):
             if self.board[i].id == _id:
                 return i
@@ -68,7 +68,7 @@ class Board:
             # pygame.draw.circle(SURF, RED, (size // 2 + w2 + 20, 10 + h2 // 2), 7, 0)
             gfxdraw.filled_circle(self.SURF, self.size // 2 + w2 + 20, 10 + h2 // 2, 7, self.RED)
             gfxdraw.aacircle(self.SURF, self.size // 2 + w2 + 20, 10 + h2 // 2, 7, self.RED)
-        for i, move in enumerate(self.moves_done):
+        for i, move in enumerate(self.moves_done):          # draw lines
             p1 = self.board[self.id_to_index(move[0])]
             p2 = self.board[self.id_to_index(move[1])]
             thickness = 3 if move == self.moves_done[-1] else 1
@@ -80,13 +80,13 @@ class Board:
             #     partner = board[id_to_index(partner_id)]
             #     pygame.draw.line(SURF, BLACK, (point.x, point.y), (partner.x, partner.y))
             # print(partner)
-        for i, point in enumerate(self.board):
+        for i, point in enumerate(self.board):      # draw dots
             # pygame.draw.circle(SURF, BLACK, (point.x, point.y), 5, 0)
             gfxdraw.filled_circle(self.SURF, point.x, point.y, 5, self.BLACK)
             gfxdraw.aacircle(self.SURF, point.x, point.y, 5, self.BLACK)
             dot_num = self.dot_font.render(str(i), True, self.BLACK)
             self.SURF.blit(dot_num, (point.x + 10, point.y - 20))
-        for box in self.boxes:
+        for box in self.boxes:          # draw boxes
             x1 = self.board[self.id_to_index(box[0])].x
             y1 = self.board[self.id_to_index(box[0])].y
             if box[4] == self.OWNER_USER:

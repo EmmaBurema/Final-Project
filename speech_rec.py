@@ -19,7 +19,7 @@ class Mic:
         try:
             # using google speech recognition
             self.speech_input = self.r.recognize_google(audio_text)
-            # print("You said: " + speech_input)
+            print("You said: " + speech_input)
             # p1, p2 = map(int, speech_input.split(","))
             return self.speech_input
         except ValueError:

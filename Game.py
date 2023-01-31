@@ -47,6 +47,7 @@ class Game:
             sleep(0.5)
             self.player2.move()         #used to be decide and move (AI player)
             self.board.check_complete()
+            #Probeer uit te commenten
             self.SURF.fill((255, 255, 255))
             self.board.disp_board()
             pygame.display.update()
