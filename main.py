@@ -1,4 +1,7 @@
 """
+Sources:
+https://github.com/coderkalyan/dots-boxes-py/blob/master/dots_boxes.py
+
             Main
             game
     board         player - this class doesn't exist yet
@@ -85,84 +88,6 @@ clock = pygame.time.Clock()
 # the gameboard is stored as a list of points
 # points contain their number, and the number of their connections
 board = []
-
-
-def get_best_move_v1(possible):
-    # take random from possible moves
-    return choice(possible)
-
-def get_best_move_v2(possible):
-    # check if there are any possible boxes
-    for p_move in possible:
-        if move_makes_box(*p_move):
-            # this move can make a box - take it!
-            return p_move
-    # ok, so there weren't any box making moves
-    # now lets just take a random move
-    return choice(possible)
-
-def get_best_move_v3(possible):
-    # check if there are any possible boxes
-    for p_move in possible:
-        if move_makes_box(*p_move):
-            # this move can make a box - take it!
-            return p_move
-    # ok, so there weren't any box making moves
-    # now lets just take a random move
-    # but, we want to make sure we don't give the user a box on the next turn
-    for box in boxes:
-        count, not_connections = count_connections_box(box)
-        # note we are checking if len(possible) > 1 because
-        # even if it is a bad move, we don't want to delete our only move
-
-        if count == 2 and len(possible) > 1:
-            # this box has 2 connections - we DO NOT want to make the third
-            # connection, because that would allow the user to make the
-            # last connection, claiming the box
-            for p_move in possible:
-                if p_move in not_connections:
-                    possible.remove(p_move)
-
-    return choice(possible)
-
-def get_best_move_v5(possible):
-    # check if there are any possible boxes
-    for p_move in possible:
-        if move_makes_box(*p_move):
-            # this move can make a box - take it!
-            return p_move
-    # ok, so there weren't any box making moves
-    # now lets just take a random move
-    # but, we want to make sure we don't give the user a box on the next turn
-
-    for box in boxes:
-        count, not_connections = count_connections_box(box)
-        # note we are checking if len(possible) > 2 because
-        # even if it is a bad move, we don't want to delete our only move
-        if count == 2 and len(possible) > 2:
-            # this box has 2 connections - we DO NOT want to make the third
-            # connection, because that would allow the user to make the
-            # last connection, claiming the box
-            # print(possible)
-            for p_move in possible:
-                if p_move in not_connections:
-                    # print(p_move)
-                    a, b = p_move
-                    possible.remove((a, b))
-                    possible.remove((b, a))
-
-    # now, we want to prioritize any spoke moves
-    for p_move in possible:
-        a, b = p_move
-        if (a, b) in spoke1 or (b, a) in spoke1:
-            return p_move
-    for p_move in possible:
-        a, b = p_move
-        if (a, b) in spoke2 or (b, a) in spoke2:
-            return p_move
-
-    return choice(possible)
-
 
 def check_complete():
     possible = possible_moves()
