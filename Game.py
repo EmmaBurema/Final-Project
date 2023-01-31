@@ -7,7 +7,7 @@ from time import sleep
 from random import choice
 from builtins import input
 from Board import Board
-from Player import move
+from Player import Player
 
 class Game:
     def __init__(self, player1, player2, BOARDSIZE):
@@ -16,8 +16,8 @@ class Game:
         self.SURF = pygame.display.set_mode((self.size, self.size))
         self.board = Board(self.boardsize)
         self.is_user_turn
-        self.player1 = player1
-        self.player2 = player2
+        self.player1 = Player(player1)
+        self.player2 = Player(player2)
 
     def gameLoop(self):
         self.SURF.fill((255, 255, 255))

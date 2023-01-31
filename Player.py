@@ -1,11 +1,13 @@
 from Board import Board
 
 class Player:
-    def __init__(self, moves_done):
+    def __init__(self, kind):
         self.moves_done = moves_done
 
         self.id_to_index = Board.id_to_index
         self.check_move_made_box = Board.check_move_made_box
+
+        self.human_or_AI = kind
 
 
     def move(self, is_user, id1, id2, board):  # SPEECH?
