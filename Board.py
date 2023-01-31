@@ -109,8 +109,8 @@ class Board:
     def is_valid(self, id1, id2, board):
         if self.is_connection(id1, id2):
             return False
-        p1 = board[Board.id_to_index(id1)]
-        p2 = board[Board.id_to_index(id2)]
+        p1 = board[Board.id_to_index(self, id1)]
+        p2 = board[Board.id_to_index(self, id2)]
         if (p1.x == p2.x + 100 or p1.x == p2.x - 100) and p1.y == p2.y:
             return True
         if p1.x == p2.x and (p1.y == p2.y + 100 or p1.y == p2.y - 100):
@@ -118,7 +118,7 @@ class Board:
         return False
 
     def check_box_made(self, is_user, id1, id2):
-        is_box = False
+        self.is_box = False
 
         for i, box in enumerate(self.boxes):
             temp = list(box[:-1])

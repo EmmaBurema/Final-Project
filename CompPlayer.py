@@ -1,6 +1,6 @@
 import pygame
 from random import choice
-from Board import Board.is_valid
+from Board import Board
 
 
 class CompPlayer:
@@ -9,7 +9,7 @@ class CompPlayer:
         self.spoke1 = [(2, 6), (10, 11), (9, 13), (4, 5)]
         self.spoke2 = [(1, 5), (6, 7), (10, 14), (8, 9)]
         self.score = score
-        self.is_valid = is_valid
+        self.is_valid = Board.is_valid
 
         self.not_connections = []
 
