@@ -54,7 +54,6 @@ class Board:
         return -1
 
     def dispay_board(self):
-        # first lets draw the score at the top
         score_user = self.score_font.render("USER: {}".format(self.score[0]), True, self.BLUE)
         w, h = self.score_font.size("USER: {}".format(self.score[0]))
         self.SURF.blit(self.score_user, (self.size // 2 - w - 10, 10))
@@ -96,13 +95,3 @@ class Board:
             elif box[4] == self.OWNER_COMPUTER:
                 text_width, text_height = self.myfont.size("C")
                 self.SURF.blit(self.BOX_COMPUTER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
-
-    def gameLoop(self):
-        self.SURF.fill((255, 255, 255))
-        user_turn = True
-        self.disp_board()
-        pygame.display.update()
-        UserMoves.user_move()
-        self.display_board()
-        pygame.display.update()
-        CompPlayer.decide_and_move()
