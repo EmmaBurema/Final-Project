@@ -13,10 +13,11 @@ from main import is_connection
 
 
 class CompPlayer:
-    def __init__(self, board):
+    def __init__(self, board, score):
         self.Board = board
         self.spoke1 = [(2, 6), (10, 11), (9, 13), (4, 5)]
         self.spoke2 = [(1, 5), (6, 7), (10, 14), (8, 9)]
+        self.score = score
 
 
     def possible_moves(self):
@@ -98,5 +99,16 @@ class CompPlayer:
             return choice(removed)
 
     def decide_and_move(self):
-        self.possible = self.possible_moves()
-        self.choice = get_best_move(self.possible)
+        # randomly pick a valid move
+        possible = possible_moves()
+        my_choice = get_best_move(possible)
+        # print(my_choice)
+        is_box = move(False, my_choice[0], my_choice[1])
+
+        if is_box:
+            self.score[1] += 1
+            self.SURF.fill((255, 255, 255))
+            disp_board()
+            pygame.display.update()
+            check_complete()
+            decide_and_move()

@@ -87,34 +87,6 @@ clock = pygame.time.Clock()
 board = []
 
 
-def count_connections_box(box):
-    # counts the number of lines that exist inside given box
-    # note - this is the points on the box itself, NOT an index to the box
-    count = 0
-    not_connections = []
-    if is_connection(box[0], box[1]):
-        count += 1
-    else:
-        not_connections.append((box[0], box[1]))
-        not_connections.append((box[1], box[0]))
-    if is_connection(box[1], box[3]):
-        count += 1
-    else:
-        not_connections.append((box[1], box[3]))
-        not_connections.append((box[3], box[1]))
-    if is_connection(box[2], box[3]):
-        count += 1
-    else:
-        not_connections.append((box[2], box[3]))
-        not_connections.append((box[3], box[2]))
-    if is_connection(box[2], box[0]):
-        count += 1
-    else:
-        not_connections.append((box[2], box[0]))
-        not_connections.append((box[0], box[2]))
-
-    return (count, not_connections)
-
 def get_best_move_v1(possible):
     # take random from possible moves
     return choice(possible)
@@ -191,79 +163,6 @@ def get_best_move_v5(possible):
 
     return choice(possible)
 
-def get_best_move(possible):
-    # check if there are any possible boxes
-    valid = possible[:]
-    for p_move in possible:
-        if move_makes_box(*p_move):
-            # this move can make a box - take it!
-            return p_move
-    # ok, so there weren't any box making moves
-    # now lets just take a random move
-    # but, we want to make sure we don't give the user a box on the next turn
-    removed = []
-    for box in boxes:
-        # print(box)
-        count, not_connections = count_connections_box(box)
-        # note we are checking if len(possible) > 2 because
-        # even if it is a bad move, we don't want to delete our only move
-        if count == 2:
-            # this box has 2 connections - we DO NOT want to make the third
-            # connection, because that would allow the user to make the
-            # last connection, claiming the box
-            # print(possible)
-            for p_move in possible:
-                if p_move in not_connections:
-                    # print(p_move)
-                    a, b = p_move
-                    removed.extend([(a, b), (b, a)])
-                    possible.remove((a, b))
-                    possible.remove((b, a))
-
-    # now, we want to prioritize any spoke moves
-    if len(possible) > 0:
-        for p_move in possible:
-            a, b = p_move
-            if (a, b) in spoke1 or (b, a) in spoke1:
-                return p_move
-        for p_move in possible:
-            a, b = p_move
-            if (a, b) in spoke2 or (b, a) in spoke2:
-                return p_move
-
-        # last resort: just pick a random move
-        return choice(possible)
-    else:
-        # now if we have nothing left in possible, that means we didn't have anything "safe"
-        # to play this turn
-        # at this point, we are forced to let the user score
-        # but still, we want to prioritize the spoke moves
-        for p_move in removed:
-            a, b = p_move
-            if (a, b) in spoke1 or (b, a) in spoke1:
-                return p_move
-        for p_move in removed:
-            a, b = p_move
-            if (a, b) in spoke2 or (b, a) in spoke2:
-                return p_move
-
-        # last resort: just pick a random move
-        return choice(removed)
-
-def decide_and_move():
-    # randomly pick a valid move
-    possible = possible_moves()
-    my_choice = get_best_move(possible)
-    # print(my_choice)
-    is_box = move(False, my_choice[0], my_choice[1])
-
-    if is_box:
-        score[1] += 1
-        SURF.fill((255, 255, 255))
-        disp_board()
-        pygame.display.update()
-        check_complete()
-        decide_and_move()
 
 def check_complete():
     possible = possible_moves()
