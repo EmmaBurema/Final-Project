@@ -1,20 +1,14 @@
 import pygame
 from pygame import gfxdraw
 
-import sys
 from collections import namedtuple
-from time import sleep
-from random import choice
 from builtins import input
-
-from UserPlayer import UserMoves
-from CompPlayer import CompPlayer
 
 
 class Board:
-    def __init__(self, BOARDSIZE):
-        self.Boardsize = BOARDSIZE
-        self.size = self.BOARDSIZE * 100 + 100
+    def __init__(self, board_size):
+        self.boardsize = board_size
+        self.size = self.boardsize * 100 + 100
 
         self.board = []
         self.Point = namedtuple('Point', ['id', 'x', 'y', 'partners'])
@@ -29,25 +23,28 @@ class Board:
 
         self.SURF = pygame.display.set_mode((self.size, self.size))
 
-        self.myfont = pygame.font.SysFont('Arial', 50)
+        self.my_font = pygame.font.SysFont('Arial', 50)
         self.score_font = pygame.font.SysFont('Arial', 30)
         self.dot_font = pygame.font.SysFont('Arial', 15)
 
-        self.moves_done
+        self.moves_done = []
+        self.moves_done_persons = []
+        self.score = [0, 0]  # user, computer
+        self.is_user_turn = False
+        self.score_user
 
-    def updateBoard(self, is_user_turn):
-        for i in range(self.Boardsize):
-            for i2 in range(self.Boardsize):
-                # print(BOARDSIZE * i + i2)
+    def update_board(self, is_user_turn):
+        for i in range(self.boardsize):
+            for i2 in range(self.boardsize):
                 self.board.append(
-                    self.Point(self.Boardsize, * i + i2, i2 * 100 + 100, i * 100 + 100, []))
-        moves_done = []
-        moves_done_persons = []
-        boxes = [[i, i + 1, i + self.Boardsize, i + self.Boardsize + 1, self.OWNER_NONE] for i in range(0, 3)]
-        boxes.extend([[i, i + 1, i + self.Boardsize, i + self.Boardsize + 1, self.OWNER_NONE] for i in range(4, 7)])
-        boxes.extend([[i, i + 1, i + self.Boardsize, i + self.Boardsize + 1, self.OWNER_NONE] for i in range(8, 11)])
-        score = [0, 0]  # user, computer
-        is_user_turn = True
+                    self.Point(self.boardsize * i + i2, i2 * 100 + 100, i * 100 + 100, []))
+        self.moves_done = []
+        self.moves_done_persons = []
+        boxes = [[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(0, 3)]
+        boxes.extend([[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(4, 7)])
+        boxes.extend([[i, i + 1, i + self.boardsize, i + self.boardsize + 1, self.OWNER_NONE] for i in range(8, 11)])
+        self.score = [0, 0]  # user, computer
+        self.is_user_turn = True
         return is_user_turn
 
     def id_to_index(self, _id):
@@ -56,8 +53,8 @@ class Board:
                 return i
         return -1
 
-    def dispay_board(self):
-        score_user = self.score_font.render("USER: {}".format(self.score[0]), True, self.BLUE)
+    def display_board(self):
+        self.score_user = self.score_font.render("USER: {}".format(self.score[0]), True, self.BLUE)
         w, h = self.score_font.size("USER: {}".format(self.score[0]))
         self.SURF.blit(self.score_user, (self.size // 2 - w - 10, 10))
         score_comp = self.score_font.render("AI: {}".format(self.score[1]), True, self.RED)
@@ -93,10 +90,10 @@ class Board:
             x1 = self.board[self.id_to_index(box[0])].x
             y1 = self.board[self.id_to_index(box[0])].y
             if box[4] == self.OWNER_USER:
-                text_width, text_height = self.myfont.size("U")
+                text_width, text_height = self.my_font.size("U")
                 self.SURF.blit(self.BOX_USER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
             elif box[4] == self.OWNER_COMPUTER:
-                text_width, text_height = self.myfont.size("C")
+                text_width, text_height = self.my_font.size("C")
                 self.SURF.blit(self.BOX_COMPUTER, (x1 + 50 - text_width / 2, y1 + 50 - text_height / 2))
 
     def is_connection(self, id1, id2):
@@ -120,43 +117,43 @@ class Board:
     def check_box_made(self, is_user, id1, id2):
         is_box = False
 
-        for i, box in enumarate(boxes):
+        for i, box in enumerate(self.boxes):
             temp = list(box[:-1])
             if id1 not in temp or id2 not in temp:
                 continue
             temp.remove(id1)
             temp.remove(id2)
 
-            if is_connection(temp[0], temp[1]) and (is_connection(id1, temp[0] and is_connection(id2, temp[1]))
-            or (is_connection(id1, temp[1]) and is_connection(id2, temp[0]))):
+            if self.is_connection(temp[0], temp[1]) and (self.is_connection(id1, temp[0] and self.is_connection(id2, temp[1]))
+            or (self.is_connection(id1, temp[1]) and self.is_connection(id2, temp[0]))):
                 if is_user:
-                    score += 1
-                    boxes[i][4] = OWNER_USER
+                    self.score += 1
+                    self.boxes[i][4] = self.OWNER_USER
                 else:
-                    score[1] + 1
-                    boxes[i][4] = OWNER_COMPUTER
-                is_box = true
+                    self.score[1] + 1
+                    self.boxes[i][4] = self.OWNER_COMPUTER
+                is_box = True
 
         return is_box
 
     def check_complete(self):
-        possible = possible_moves()
+        possible = self.possible_moves()
         if len(possible) == 0:
             # game is finished!
             print("Game over")
-            if score[0] > score[1]:
-                print("You won! Score: {} to {}".format(score[0], score[1]))
-            elif score[1] > score[0]:
-                print("Computer won :( Score: {} to {}".format(score[0], score[1]))
+            if self.score[0] > self.score[1]:
+                print("You won! Score: {} to {}".format(self.score[0], self.score[1]))
+            elif self.score[1] > self.score[0]:
+                print("Computer won :( Score: {} to {}".format(self.score[0], self.score[1]))
             else:
-                print("Tie game. Score: {} to {}".format(score[0], score[1]))
+                print("Tie game. Score: {} to {}".format(self.score[0], self.score[1]))
             input("Press enter to end game:")
             pygame.quit()
 
     def move_makes_box(self, id1, id2):
         is_box = False
         # check if the connection just make from id1 to id2 made a box
-        for i, box in enumerate(boxes):
+        for i, box in enumerate(self.boxes):
             temp = list(box[:-1])
             # print(temp)
             if id1 not in temp or id2 not in temp:
@@ -165,9 +162,9 @@ class Board:
             temp.remove(id1)
             temp.remove(id2)
             # print(temp)
-            if is_connection(temp[0], temp[1]):
-                if (is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or (
-                        is_connection(id1, temp[1]) and is_connection(id2, temp[0])):
+            if self.is_connection(temp[0], temp[1]):
+                if (self.is_connection(id1, temp[0]) and self.is_connection(id2, temp[1])) or (
+                        self.is_connection(id1, temp[1]) and self.is_connection(id2, temp[0])):
                     is_box = True
 
         return is_box
@@ -175,21 +172,21 @@ class Board:
     def check_move_made_box(self, is_user, id1, id2):
         is_box = False
         # check if the connection just make from id1 to id2 made a box
-        for i, box in enumerate(boxes):
+        for i, box in enumerate(self.boxes):
             temp = list(box[:-1])
             if id1 not in temp or id2 not in temp:
                 continue
             temp.remove(id1)
             temp.remove(id2)
-            if is_connection(temp[0], temp[1]) and ((is_connection(id1, temp[0]) and is_connection(id2, temp[1])) or
-                                                    (is_connection(id1, temp[1]) and is_connection(id2, temp[0]))):
+            if self.is_connection(temp[0], temp[1]) and ((self.is_connection(id1, temp[0]) and self.is_connection(id2, temp[1])) or
+                                                    (self.is_connection(id1, temp[1]) and self.is_connection(id2, temp[0]))):
                 # yup, we just made a box
                 if is_user:
-                    score[0] += 1
-                    boxes[i][4] = OWNER_USER
+                    self.score[0] += 1
+                    self.boxes[i][4] = self.OWNER_USER
                 else:
-                    score[1] + 1
-                    boxes[i][4] = OWNER_COMPUTER
+                    self.score[1] + 1
+                    self.boxes[i][4] = self.OWNER_COMPUTER
                 is_box = True
 
         return is_box
