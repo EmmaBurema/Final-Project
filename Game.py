@@ -1,5 +1,17 @@
+import pygame
+from pygame.locals import *
+from pygame import gfxdraw
+import sys
+from collections import namedtuple
+from time import sleep
+from random import choice
+from builtins import input
+
+import speech_recognition as sr
+import pyaudio
+
 class Game:
-    def __init__(self, BOARDSIZE):
+    def __init__(self, player1, player 2, BOARDSIZE):
         self.boardsize = BOARDSIZE
         self.size = self.broadsize * 100 + 100
         self.SURF = pygame.display.set_mode((self.size, self.size))

@@ -48,48 +48,51 @@ from Game import Game
 from UserPlayer import UserMoves as HumanPlayer
 from CompPlayer import CompPlayer as AIPlayer
 
-import pygame
-from pygame.locals import *
-from pygame import gfxdraw
-import sys
-from collections import namedtuple
-from time import sleep
-from random import choice
-from builtins import input
+boardsize = 4
 
-import speech_recognition as sr
-import pyaudio
+if(tryit == True):
+    import pygame
+    from pygame.locals import *
+    from pygame import gfxdraw
+    import sys
+    from collections import namedtuple
+    from time import sleep
+    from random import choice
+    from builtins import input
+
+    import speech_recognition as sr
+    import pyaudio
 
 
-# BOARDSIZE = 4
-#
-# BLACK = (0, 0, 0)
-# RED = (255, 0, 0)
-# BLUE = (0, 0, 255)
-#
-# OWNER_NONE = 0
-# OWNER_USER = 1
-# OWNER_COMPUTER = 2
-#
-# Point = namedtuple('Point', ['id', 'x', 'y', 'partners'])
-# #Box = namedtuple("Box", ["p1", "p2", "p3", "p4", "owner"])
-#
-# # initialize game engine
-# pygame.init()
-# pygame.font.init()
-# myfont = pygame.font.SysFont('Arial', 50)
-# score_font = pygame.font.SysFont('Arial', 30)
-# dot_font = pygame.font.SysFont('Arial', 15)
-#
-# BOX_USER = myfont.render('U', True, BLUE)
-# BOX_COMPUTER = myfont.render('C', True, RED)
-# spoke1 = [(2, 6), (10, 11), (9, 13), (4, 5)]
-# spoke2 = [(1, 5), (6, 7), (10, 14), (8, 9)]
-#
-# size = BOARDSIZE * 100 + 100
-# SURF = pygame.display.set_mode((size, size))
-# pygame.display.set_caption("Dots and  Boxes")
-# clock = pygame.time.Clock()
+    # BOARDSIZE = 4
+    #
+    # BLACK = (0, 0, 0)
+    # RED = (255, 0, 0)
+    # BLUE = (0, 0, 255)
+    #
+    # OWNER_NONE = 0
+    # OWNER_USER = 1
+    # OWNER_COMPUTER = 2
+    #
+    # Point = namedtuple('Point', ['id', 'x', 'y', 'partners'])
+    # #Box = namedtuple("Box", ["p1", "p2", "p3", "p4", "owner"])
+    #
+    # # initialize game engine
+    # pygame.init()
+    # pygame.font.init()
+    # myfont = pygame.font.SysFont('Arial', 50)
+    # score_font = pygame.font.SysFont('Arial', 30)
+    # dot_font = pygame.font.SysFont('Arial', 15)
+    #
+    # BOX_USER = myfont.render('U', True, BLUE)
+    # BOX_COMPUTER = myfont.render('C', True, RED)
+    # spoke1 = [(2, 6), (10, 11), (9, 13), (4, 5)]
+    # spoke2 = [(1, 5), (6, 7), (10, 14), (8, 9)]
+    #
+    # size = BOARDSIZE * 100 + 100
+    # SURF = pygame.display.set_mode((size, size))
+    # pygame.display.set_caption("Dots and  Boxes")
+    # clock = pygame.time.Clock()
 
-game = Game(HumanPlayer(), AIPlayer())
+game = Game(HumanPlayer(), AIPlayer(), boardsize)
 game.run()
