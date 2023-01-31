@@ -2,6 +2,10 @@ class Game:
     def __init__(self):
 
     def gameLoop(self):
+        SURF.fill((255, 255, 255))
+        disp_board()
+        pygame.display.update()
+
         while True:
             # write event handlers here
             for event in pygame.event.get():
