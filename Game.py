@@ -1,5 +1,8 @@
 class Game:
-    def __init__(self):
+    def __init__(self, BOARDSIZE):
+        self.boardsize = BOARDSIZE
+        self.size = self.broadsize * 100 + 100
+        self.SURF = pygame.display.set_mode((self.size, self.size))
 
     def gameLoop(self):
         SURF.fill((255, 255, 255))
