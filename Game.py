@@ -8,6 +8,7 @@ from random import choice
 from builtins import input
 
 from Board import Board
+from Player import move
 
 class Game:
     def __init__(self, player1, player2, BOARDSIZE):
@@ -15,7 +16,7 @@ class Game:
         self.size = self.broadsize * 100 + 100
         self.SURF = pygame.display.set_mode((self.size, self.size))
         self.board = Board(self.boardsize)
-
+        self.is_user_turn
         self.player1 = player1
         self.player2 = player2
 
@@ -32,25 +33,21 @@ class Game:
                     sys.exit()
 
             # clear the screen before drawing
-            SURF.fill((255, 255, 255))
-            is_user_turn = True
-            disp_board()
+            self.SURF.fill((255, 255, 255))
+            self.is_user_turn = True
+            self.board.disp_board()
             pygame.display.update()
-            user_move()
-            disp_board()
-            # display what was drawn
+            self.player1.move()
+            self.board.disp_board()
+            # display what the turn that plyer 1 made
             pygame.display.update()
-            # sleep(0.5)
-            is_user_turn = False
-            disp_board()
-            pygame.display.update()
-            sleep(0.5)
-            decide_and_move()
-            check_complete()
-            SURF.fill((255, 255, 255))
-            disp_board()
+            self.is_user_turn = False
+            self.board.disp_board()
             pygame.display.update()
             sleep(0.5)
-            # sleep(1.5)
-            # run at 20 fps
-            # clock.tick(20)
+            self.player2.move()         #used to be decide and move (AI player)
+            self.board.check_complete()
+            self.SURF.fill((255, 255, 255))
+            self.board.disp_board()
+            pygame.display.update()
+            sleep(0.5)
