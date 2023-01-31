@@ -14,8 +14,6 @@ class Mic:
             audio_text = self.r.listen(source)
             print("Got it, thanks")
 
-            #   This bit is exception handling
-            #   r (recognizer method) gives a request error when the API cannot be reached
         try:
             # using google speech recognition
             self.speech_input = self.r.recognize_google(audio_text)

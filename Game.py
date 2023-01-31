@@ -6,7 +6,6 @@ from collections import namedtuple
 from time import sleep
 from random import choice
 from builtins import input
-
 from Board import Board
 from Player import move
 
@@ -47,7 +46,8 @@ class Game:
             sleep(0.5)
             self.player2.move()         #used to be decide and move (AI player)
             self.board.check_complete()
-            #Probeer uit te commenten
+
+            #Could be commented out
             self.SURF.fill((255, 255, 255))
             self.board.disp_board()
             pygame.display.update()

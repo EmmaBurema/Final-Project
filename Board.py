@@ -1,10 +1,7 @@
 import pygame
 from pygame import gfxdraw
-
 from collections import namedtuple
 from builtins import input
-
-
 class Board:
     def __init__(self, board_size):
         self.boardsize = board_size

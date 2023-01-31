@@ -7,11 +7,20 @@ chat.openai.com
 https://replit.com/@SharkCoding/Dots-and-Boxes-Pygame?embed=true#pyproject.toml
 https://mail.python.org/pipermail/tutor/2002-June/014765.html
 
-            Main
-            game
-    Board         Player
-            compPlayer  userPlayer
-                        speechRec
+Emma and Marije hereby present a dots and boxes game which can be played against an AI with speech.
+The whole purpose of the game is to build walls which can make square boxes. When the player closes
+a box it becomes their property and they can immediately build another wall as well. The player with
+the most boxes wins the game.
+
+The player can build a wall by saying the number of the first dot ‘’comma’’ the number of the second
+dot he/she wants to connect it to. The code then splits the coordinates in the sentence with the comma
+and builds the wall.
+
+The AI always tries to come up with the best possible move by looking at the current board. It has
+been given a set of heuristics and goes through them in order of importance. It doesn’t calculate a
+score, but it checks all the possible moves/boxes and looks at which one is best to build upon. So
+instead of calculating scores to prioritize moves it does this by ranking them.
+
 
     Structure:
     The main loop will call upon the game class to run the game

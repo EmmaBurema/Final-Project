@@ -10,7 +10,6 @@ class Player:
 
     def move(self, is_user, id1, id2, board):  # SPEECH?
         # connects id1 and id2
-        # depends on somebody else to check if move is valid
         board[self.id_to_index(id1)].partners.append(id2)
         board[self.id_to_index(id2)].partners.append(id1)
         self.moves_done.append((id1, id2))

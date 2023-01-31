@@ -2,7 +2,6 @@ import pygame
 from random import choice
 from Board import Board
 
-
 class CompPlayer:
     def __init__(self, board, score):
         self.Board = board
@@ -27,8 +26,8 @@ class CompPlayer:
             return possible
 
     def count_connections_box(self, box):
+        # count how many lines are in the boxes
         count = 0
-
         if self.BoardClass.is_connection(box[0], box[1]):
             count += 1
         else:
@@ -56,21 +55,23 @@ class CompPlayer:
         return (count, self.BoardClass.not_connections)
 
     def get_best_move(self, possible):
+        # checking for possible boxes
         self.valid = possible[:]
         for p_move in possible:
-            if self.move_makes_box(*p_move):
+            if self.move_makes_box(*p_move):    #if it can close a box, do so
                 return p_move
         removed = []
+        # Making random move without giving oponent a box to close
         for box in self.boxes:
             count, self.not_connections = self.count_connections_box(box)
-            if count == 2:
+            if count == 2:      # two connections >> so don't make another
                 for p_move in possible:
                     if p_move in self.not_connections:
                         a, b = p_move
                         removed.extend([(a, b), (b, a)])
                         possible.remove((a, b))
                         possible.remove((b, a))
-        if len(possible) > 0:
+        if len(possible) > 0:       # prioritizing the spoke moves
             for p_move in possible:
                 a, b = p_move
                 if (a, b) in self.spoke1 or (b, a) in self.spoke1:
@@ -79,8 +80,11 @@ class CompPlayer:
                 a, b = p_move
                 if (a, b) in self.spoke2 or (b, a) in self.spoke2:
                     return p_move
+            # If everything is whack, just do something random
             return choice(possible)
-        else:
+        else:   # nothing left in possible
+            # have to give human a box :(
+            # keep prioritizing spoke moves
             for p_move in removed:
                 a, b = p_move
                 if (a, b) in self.spoke1 or (b, a) in self.spoke1:
@@ -89,13 +93,13 @@ class CompPlayer:
                 a, b = p_move
                 if (a, b) in self.spoke2 or (b, a) in self.spoke2:
                     return p_move
+            # again, something random
             return choice(removed)
 
     def decide_and_move(self):
-        # randomly pick a valid move
+        # Do a random move
         possible = self.possible_moves()
         my_choice = self.get_best_move(possible)
-        # print(my_choice)
         is_box = self.move(False, my_choice[0], my_choice[1])
 
         if is_box:
